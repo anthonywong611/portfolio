@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/sonner";
+import { MotionProvider } from "@/components/motion-wrapper";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -53,7 +54,9 @@ export default function RootLayout({
           <a href="#main-content" className="skip-to-content">
             Skip to content
           </a>
-          {children}
+          <MotionProvider>
+            {children}
+          </MotionProvider>
           <Toaster />
         </ThemeProvider>
         <Analytics />

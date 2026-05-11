@@ -7,8 +7,8 @@ export function ProjectsSection() {
       <div className="mx-auto max-w-5xl">
         <h2 className="mb-10 font-bold text-foreground">Projects</h2>
         <div className="grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+          {projects.map((project, i) => (
+            <ProjectCard key={project.slug} project={project} index={i} />
           ))}
         </div>
       </div>

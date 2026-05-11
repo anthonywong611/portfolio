@@ -5,8 +5,11 @@ import { ProjectsSection } from "@/components/projects-section";
 import { BlogPreview } from "@/components/blog-preview";
 import { ContactForm } from "@/components/contact-form";
 import { Footer } from "@/components/footer";
+import { getAllPosts } from "@/lib/mdx";
 
 export default function Home() {
+  const posts = getAllPosts().slice(0, 3);
+
   return (
     <>
       <Navbar />
@@ -14,7 +17,7 @@ export default function Home() {
         <Hero />
         <ExperienceTimeline />
         <ProjectsSection />
-        <BlogPreview />
+        <BlogPreview posts={posts} />
         <ContactForm />
       </main>
       <Footer />

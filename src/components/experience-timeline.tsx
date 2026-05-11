@@ -1,4 +1,7 @@
+"use client";
+
 import { experiences } from "@/data/experiences";
+import { FadeUpOnScroll } from "@/components/motion-wrapper";
 
 export function ExperienceTimeline() {
   return (
@@ -11,10 +14,7 @@ export function ExperienceTimeline() {
           <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-accent to-border" />
 
           {experiences.map((exp, i) => (
-            <div
-              key={i}
-              className="relative mb-10 last:mb-0"
-            >
+            <FadeUpOnScroll key={i} delay={i * 0.1} className="relative mb-10 last:mb-0">
               {/* Dot */}
               <div
                 className={`absolute -left-8 top-1.5 h-4 w-4 rounded-full border-[3px] ${
@@ -67,7 +67,7 @@ export function ExperienceTimeline() {
                   </ul>
                 </div>
               </div>
-            </div>
+            </FadeUpOnScroll>
           ))}
         </div>
       </div>
