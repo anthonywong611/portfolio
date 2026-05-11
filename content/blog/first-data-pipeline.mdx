@@ -1,0 +1,20 @@
+---
+title: "What I Learned from My First Data Pipeline"
+publishedAt: "2026-04-15"
+tags: ["Python", "Data Engineering", "Kafka"]
+summary: "Lessons from building a real-time event streaming pipeline — from Kafka basics to exactly-once delivery."
+---
+
+My first real data engineering project was building a streaming pipeline that needed to process 50,000 events per second with exactly-once delivery. Here's what I learned.
+
+## Start Simple
+
+The temptation is to over-engineer from day one. I started with a simple Kafka consumer and producer, validated the data flow, then added complexity incrementally — dead letter queues, monitoring, alerting.
+
+## Monitoring Is Not Optional
+
+You can't debug a streaming pipeline by reading logs. I set up Grafana dashboards from the start and it saved me countless hours of guessing what went wrong.
+
+## Key Takeaway
+
+Build the simplest version first, instrument everything, and add complexity only when you have data showing you need it.

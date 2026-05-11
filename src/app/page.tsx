@@ -2,6 +2,7 @@ import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { ExperienceTimeline } from "@/components/experience-timeline";
 import { ProjectsSection } from "@/components/projects-section";
+import { BlogPreview } from "@/components/blog-preview";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
         <Hero />
         <ExperienceTimeline />
         <ProjectsSection />
+        <BlogPreview />
       </main>
     </>
   );
