@@ -1,15 +1,14 @@
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Navbar } from "@/components/navbar";
 
 export default function Home() {
   return (
-    <main id="main-content" className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <h1 className="font-bold text-foreground">Anthony Wong</h1>
-        <p className="text-muted-foreground">Portfolio coming soon</p>
-        <div className="mt-4">
-          <ThemeToggle />
-        </div>
-      </div>
-    </main>
+    <>
+      <Navbar />
+      <main id="main-content" className="pt-16">
+        <section id="home" className="flex min-h-screen items-center justify-center">
+          <p className="text-muted-foreground">Sections coming soon...</p>
+        </section>
+      </main>
+    </>
   );
 }
