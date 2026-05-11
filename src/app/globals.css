@@ -1,0 +1,176 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-geist: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-geist-mono: "Geist Mono", ui-monospace, monospace;
+
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-border: #e2e8f0;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-section-alt: #f8fafc;
+  --color-accent: #10b981;
+  --color-accent-foreground: #ffffff;
+  --color-accent-muted: rgba(16, 185, 129, 0.13);
+  --color-ring: #10b981;
+  --color-input: #e2e8f0;
+  --color-primary: #0f172a;
+  --color-primary-foreground: #f8fafc;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+
+.dark {
+  --color-background: #0f172a;
+  --color-foreground: #e2e8f0;
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-border: #334155;
+  --color-card: #1e293b;
+  --color-card-foreground: #e2e8f0;
+  --color-section-alt: #1e293b;
+  --color-accent: #10b981;
+  --color-accent-foreground: #ffffff;
+  --color-accent-muted: rgba(16, 185, 129, 0.13);
+  --color-ring: #10b981;
+  --color-input: #334155;
+  --color-primary: #f8fafc;
+  --color-primary-foreground: #0f172a;
+  --color-secondary: #1e293b;
+  --color-secondary-foreground: #e2e8f0;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-popover: #1e293b;
+  --color-popover-foreground: #e2e8f0;
+}
+
+body {
+  font-family: var(--font-geist);
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Fluid type scale */
+h1 {
+  font-size: clamp(2.25rem, 1.75rem + 2.5vw, 3.5rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
+}
+
+/* Skip to content */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--color-accent);
+  color: white;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0;
+}
+
+.skip-to-content:focus {
+  left: 0;
+}
+
+/* Prose styles for MDX content */
+.prose {
+  line-height: 1.75;
+}
+
+.prose h2 {
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  font-weight: 700;
+}
+
+.prose h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.prose p {
+  margin-bottom: 1.25em;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 0.5em;
+  margin-bottom: 1.25em;
+  padding-left: 1.5em;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.25em;
+}
+
+.prose code {
+  font-family: var(--font-geist-mono);
+  font-size: 0.875em;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  background: var(--color-muted);
+}
+
+.prose pre {
+  margin-top: 1em;
+  margin-bottom: 1.5em;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: var(--color-muted);
+  overflow-x: auto;
+}
+
+.prose pre code {
+  padding: 0;
+  background: none;
+}
+
+.prose strong {
+  font-weight: 700;
+  color: var(--color-foreground);
+}
+
+.prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  text-decoration: none;
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 1em;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: var(--color-muted-foreground);
+}
