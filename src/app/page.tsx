@@ -3,6 +3,7 @@ import { Hero } from "@/components/hero";
 import { ExperienceTimeline } from "@/components/experience-timeline";
 import { ProjectsSection } from "@/components/projects-section";
 import { BlogPreview } from "@/components/blog-preview";
+import { ContactForm } from "@/components/contact-form";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <ExperienceTimeline />
         <ProjectsSection />
         <BlogPreview />
+        <ContactForm />
       </main>
     </>
   );
