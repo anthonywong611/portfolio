@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { resend } from "@/lib/resend";
+import { getResend } from "@/lib/resend";
 
 const rateLimitMap = new Map<string, number>();
 
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
     rateLimitMap.set(ip, now);
 
-    await resend.emails.send({
+    await getResend().emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: "hello@anthonywong.dev",
       subject: `Portfolio contact from ${name}`,
