@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { subjects, type Subject } from "@/data/subjects";
+import { subjects } from "@/data/subjects";
 
 describe("subject registry", () => {
   it("exports a non-empty array of subjects", () => {
