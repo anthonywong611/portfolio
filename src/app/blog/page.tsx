@@ -28,7 +28,7 @@ export default function BlogPage() {
       {posts.length === 0 ? (
         <p className="text-muted-foreground">No posts yet. Check back soon!</p>
       ) : (
-        <Suspense>
+        <Suspense fallback={null}>
           <BlogClient posts={posts} />
         </Suspense>
       )}

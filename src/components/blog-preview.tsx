@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { subjects } from "@/data/subjects";
 import { SubjectFilter } from "@/components/subject-filter";
+import { FadeUpOnScroll } from "@/components/motion-wrapper";
 import type { BlogPost } from "@/types";
 
 export function BlogPreview({ posts }: { posts: BlogPost[] }) {
@@ -14,14 +15,16 @@ export function BlogPreview({ posts }: { posts: BlogPost[] }) {
     <section id="blog" className="bg-section-alt px-4 py-24 md:px-8">
       <div className="mx-auto max-w-5xl">
         <h2 className="mb-10 font-bold text-foreground">Blog</h2>
-        <SubjectFilter
-          posts={posts}
-          subjects={subjects}
-          selectedSubject={selectedSubject}
-          onSelectSubject={setSelectedSubject}
-          maxPosts={5}
-          showViewMore
-        />
+        <FadeUpOnScroll>
+          <SubjectFilter
+            posts={posts}
+            subjects={subjects}
+            selectedSubject={selectedSubject}
+            onSelectSubject={setSelectedSubject}
+            maxPosts={5}
+            showViewMore
+          />
+        </FadeUpOnScroll>
       </div>
     </section>
   );

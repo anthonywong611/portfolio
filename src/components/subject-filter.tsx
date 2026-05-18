@@ -40,6 +40,8 @@ export function SubjectFilter({
       {/* Mobile: horizontal pills */}
       <div className="flex gap-2 overflow-x-auto pb-4 md:hidden">
         <button
+          type="button"
+          aria-pressed={selectedSubject === null}
           onClick={() => onSelectSubject(null)}
           className={`shrink-0 rounded-full px-4 py-1.5 text-sm transition-colors ${
             selectedSubject === null
@@ -51,7 +53,9 @@ export function SubjectFilter({
         </button>
         {subjects.map((subject) => (
           <button
+            type="button"
             key={subject.slug}
+            aria-pressed={selectedSubject === subject.slug}
             onClick={() => onSelectSubject(subject.slug)}
             className={`shrink-0 rounded-full px-4 py-1.5 text-sm transition-colors ${
               selectedSubject === subject.slug
@@ -70,6 +74,8 @@ export function SubjectFilter({
           Subjects
         </p>
         <button
+          type="button"
+          aria-pressed={selectedSubject === null}
           onClick={() => onSelectSubject(null)}
           className={`mb-1 block w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors ${
             selectedSubject === null
@@ -81,7 +87,9 @@ export function SubjectFilter({
         </button>
         {subjects.map((subject) => (
           <button
+            type="button"
             key={subject.slug}
+            aria-pressed={selectedSubject === subject.slug}
             onClick={() => onSelectSubject(subject.slug)}
             className={`mb-1 block w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors ${
               selectedSubject === subject.slug
@@ -134,6 +142,7 @@ export function SubjectFilter({
                   <p className="text-sm text-muted-foreground">
                     {new Date(post.publishedAt).toLocaleDateString("en-US", {
                       month: "long",
+                      ...(showSummary && { day: "numeric" }),
                       year: "numeric",
                     })}{" "}
                     &middot; {post.readingTime}
