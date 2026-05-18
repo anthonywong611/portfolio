@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer";
 import { getAllPosts } from "@/lib/mdx";
 
 export default function Home() {
-  const posts = getAllPosts().slice(0, 3);
+  const posts = getAllPosts();
 
   return (
     <>
