@@ -13,6 +13,7 @@ type SubjectFilterProps = {
   onSelectSubject: (slug: string | null) => void;
   maxPosts?: number;
   showViewMore?: boolean;
+  showSummary?: boolean;
 };
 
 export function SubjectFilter({
@@ -22,6 +23,7 @@ export function SubjectFilter({
   onSelectSubject,
   maxPosts,
   showViewMore,
+  showSummary,
 }: SubjectFilterProps) {
   const filteredPosts = filterPostsBySubject(posts, selectedSubject, maxPosts);
 
@@ -124,6 +126,11 @@ export function SubjectFilter({
                   <h4 className="mb-1 text-base font-semibold text-foreground transition-colors group-hover:text-accent">
                     {post.title}
                   </h4>
+                  {showSummary && post.summary && (
+                    <p className="mb-2 text-sm text-muted-foreground">
+                      {post.summary}
+                    </p>
+                  )}
                   <p className="text-sm text-muted-foreground">
                     {new Date(post.publishedAt).toLocaleDateString("en-US", {
                       month: "long",

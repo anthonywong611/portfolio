@@ -28,6 +28,7 @@ export function BlogClient({ posts }: { posts: BlogPost[] }) {
       subjects={subjects}
       selectedSubject={selectedSubject}
       onSelectSubject={handleSelectSubject}
+      showSummary
     />
   );
 }
