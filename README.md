@@ -13,7 +13,7 @@ Key features:
 - Single long-scroll homepage with anchor navigation between sections
 - Vertical experience timeline with skill pills and milestone highlights
 - Project showcase with cards linking to detail pages
-- Blog powered by MDX files with reading time and tag support
+- Blog powered by MDX files with subject-based filtering, reading time, and tag support
 - Server-side contact form via Resend with honeypot spam protection and rate limiting
 - System-aware dark mode with manual toggle
 - Subtle fade-up animations that respect `prefers-reduced-motion`
@@ -58,6 +58,7 @@ portfolio/
 │   │   │   ├── [slug]/
 │   │   │   │   ├── page.tsx           # Blog post detail page
 │   │   │   │   └── opengraph-image.tsx
+│   │   │   ├── blog-client.tsx        # Client component for subject filtering with URL state
 │   │   │   ├── layout.tsx             # Blog layout (navbar + footer)
 │   │   │   └── page.tsx               # Blog index page
 │   │   ├── projects/
@@ -77,25 +78,31 @@ portfolio/
 │   │   │   ├── card.tsx
 │   │   │   ├── sheet.tsx
 │   │   │   └── sonner.tsx
-│   │   ├── blog-preview.tsx           # Blog preview section (homepage)
+│   │   ├── blog-preview.tsx           # Blog preview section with subject filtering (homepage)
 │   │   ├── contact-form.tsx           # Contact form (client component)
-│   │   ├── experience-timeline.tsx    # Vertical timeline with cards
+│   │   ├── education-section.tsx      # Education cards with institution icons
+│   │   ├── experience-timeline.tsx    # Vertical timeline with brand icons
 │   │   ├── footer.tsx                 # Footer with social links
-│   │   ├── hero.tsx                   # Hero + about section
+│   │   ├── hero.tsx                   # Hero + about section with profile photo
+│   │   ├── icons.tsx                  # BrandIcon component with icon lookup map
 │   │   ├── motion-wrapper.tsx         # LazyMotion provider, FadeUp, FadeUpOnScroll
 │   │   ├── navbar.tsx                 # Fixed navbar with mobile Sheet drawer
 │   │   ├── project-card.tsx           # Project card for homepage grid
 │   │   ├── projects-section.tsx       # Projects grid section (homepage)
+│   │   ├── subject-filter.tsx         # Shared subject filtering component (sidebar + pills)
 │   │   └── theme-toggle.tsx           # Dark/light mode toggle
 │   ├── data/
-│   │   ├── experiences.ts             # Work experience entries
-│   │   └── projects.ts               # Project entries
+│   │   ├── education.ts              # Education entries (degree, institution, areas of study)
+│   │   ├── experiences.ts             # Work experience entries (title, company, skills, milestones)
+│   │   ├── projects.ts               # Project entries
+│   │   └── subjects.ts               # Blog subject registry (slug + label)
 │   ├── lib/
 │   │   ├── mdx.ts                     # MDX file reading + parsing utilities
 │   │   ├── resend.ts                  # Resend email client
+│   │   ├── subjects.ts               # Subject filtering logic (filterPostsBySubject)
 │   │   └── utils.ts                   # cn() utility (clsx + tailwind-merge)
 │   └── types/
-│       └── index.ts                   # Shared types (Experience, Project, BlogPost)
+│       └── index.ts                   # Shared types (Experience, Education, Project, BlogPost)
 ├── .env.example                       # Environment variable template
 ├── .nvmrc                             # Node version pin (24)
 ├── components.json                    # shadcn/ui configuration
@@ -122,7 +129,7 @@ portfolio/
 
 Content is stored in two forms:
 
-1. **TypeScript data files** (`src/data/`) — Structured data for experiences and projects. Edited directly in code. Changes require a rebuild.
+1. **TypeScript data files** (`src/data/`) — Structured data for experiences, education, projects, and blog subjects. Edited directly in code. Changes require a rebuild.
 2. **MDX files** (`content/blog/`) — Blog posts with YAML frontmatter. Parsed at build time using `gray-matter` and `reading-time`. No CMS; files are committed to the repo.
 
 ### Theming
@@ -185,6 +192,7 @@ Opens at [http://localhost:3000](http://localhost:3000). Uses Turbopack for fast
 | `pnpm dev` | Start development server with Turbopack |
 | `pnpm build` | Create optimized production build |
 | `pnpm start` | Serve the production build locally |
+| `pnpm test` | Run tests with Vitest |
 | `pnpm lint` | Run ESLint |
 | `pnpm tsc --noEmit` | Run TypeScript type checking |
 
@@ -202,19 +210,20 @@ Opens at [http://localhost:3000](http://localhost:3000). Uses Turbopack for fast
 
 ### Homepage (`/`)
 
-A single long-scroll page composed of five sections, each with an anchor ID for navbar navigation:
+A single long-scroll page composed of six sections, each with an anchor ID for navbar navigation:
 
 | Section | Anchor | Description |
 | --- | --- | --- |
-| Hero + About | `#home` | Introduction with name, bio, skill pills, social links (GitHub, LinkedIn), and resume download button. Photo placeholder on the right. |
-| Experience | `#experience` | Vertical timeline with a gradient line. Each entry shows title, period, summary, skill pills, and key milestones. Current role has an emerald dot. |
+| Hero + About | `#home` | Introduction with name, bio, skill pills with brand icons, social links (GitHub, LinkedIn), profile photo, and resume download button. |
+| Experience | `#experience` | Vertical timeline with a gradient line. Each entry shows title, company (with brand icon), period, summary, skill pills (with brand icons), and key milestones. Current role has an emerald dot. |
+| Education | `#education` | Education cards with institution icon, degree, period, and areas of study rendered as bullet points. |
 | Projects | `#projects` | 2-column card grid. Each card has a screenshot placeholder, title, summary, tech stack pills, and links to GitHub/live demo. Cards link to detail pages. |
-| Blog | `#blog` | Preview of the 3 most recent posts with title, date, and reading time. Links to the full blog index. |
+| Blog | `#blog` | Two-panel subject filtering layout. Desktop: alphabetical subject sidebar on the left, up to 5 filtered articles on the right. Mobile: horizontal scrollable pills above articles. Defaults to showing latest posts. "View more" links to the full blog index. |
 | Contact | `#contact` | Form with name, email, and message fields. Includes a hidden honeypot field for spam prevention. Submissions are sent via the Resend API. |
 
 ### Blog (`/blog` and `/blog/[slug]`)
 
-- **Index page** lists all posts with title, summary, date, and reading time
+- **Index page** features the same two-panel subject filtering layout as the homepage. Subject selection is reflected in the URL query parameter (`/blog?subject=data-engineering`) for shareable, bookmarkable links. Browser back/forward navigates between subject selections. Shows all matching posts with summaries.
 - **Detail page** renders MDX content with styled prose, tag pills, and a back link
 - Posts are sorted by `publishedAt` date (newest first)
 
@@ -246,11 +255,14 @@ A single long-scroll page composed of five sections, each with an anchor ID for 
 
 | Component | File | Description |
 | --- | --- | --- |
-| `Hero` | `src/components/hero.tsx` | Two-column hero with text content (bio, skill pills, social links, resume button) and photo placeholder. Wrapped in `FadeUp` animations. |
-| `ExperienceTimeline` | `src/components/experience-timeline.tsx` | Vertical timeline reading from `src/data/experiences.ts`. Each card wrapped in `FadeUpOnScroll`. |
+| `Hero` | `src/components/hero.tsx` | Two-column hero with text content (bio, skill pills with brand icons, social links, resume button) and profile photo. Wrapped in `FadeUp` animations. |
+| `ExperienceTimeline` | `src/components/experience-timeline.tsx` | Vertical timeline reading from `src/data/experiences.ts`. Shows company name with brand icon and skill pills with brand icons. Each card wrapped in `FadeUpOnScroll`. |
+| `EducationSection` | `src/components/education-section.tsx` | Education cards reading from `src/data/education.ts`. Shows institution icon, degree, period (top-right), and areas of study as bullet points. Wrapped in `FadeUpOnScroll`. |
+| `BrandIcon` | `src/components/icons.tsx` | Shared icon component with a lookup map for skills, companies, and institutions. Uses Simple Icons, Font Awesome, and Lucide fallbacks. |
 | `ProjectsSection` | `src/components/projects-section.tsx` | Grid wrapper that renders `ProjectCard` components from `src/data/projects.ts`. |
 | `ProjectCard` | `src/components/project-card.tsx` | Individual project card with hover lift effect, screenshot placeholder, tech pills, and icon links. Wrapped in `FadeUpOnScroll`. |
-| `BlogPreview` | `src/components/blog-preview.tsx` | Shows up to 3 recent blog posts as clickable rows. Receives posts as props from the server page component. Wrapped in `FadeUpOnScroll`. |
+| `BlogPreview` | `src/components/blog-preview.tsx` | Two-panel blog section with subject filtering via `SubjectFilter`. Uses local `useState` for subject selection. Shows up to 5 posts per subject. Wrapped in `FadeUpOnScroll`. |
+| `SubjectFilter` | `src/components/subject-filter.tsx` | Shared presentational component for subject-based blog filtering. Desktop: sidebar with alphabetical subject list. Mobile: horizontal scrollable pills. Renders filtered article cards with optional summaries. Used by both `BlogPreview` and `BlogClient`. |
 | `ContactForm` | `src/components/contact-form.tsx` | Form with client-side submission to `/api/contact`. Shows toast notifications via Sonner. Includes honeypot field. |
 
 ### Animation Components
@@ -288,14 +300,27 @@ touch content/blog/my-new-post.mdx
 ---
 title: "Your Post Title"
 publishedAt: "2026-06-01"
+subjects: ["data-engineering"]
 tags: ["Tag1", "Tag2"]
 summary: "A one-sentence description of the post."
 ---
 ```
 
+The `subjects` field is an array of subject slugs from the registry in `src/data/subjects.ts`. A post can belong to one or more subjects. Posts without a `subjects` field will only appear under "Latest" (no subject filter).
+
 3. Write your content below the frontmatter using standard Markdown syntax. The filename (without `.mdx`) becomes the URL slug: `/blog/my-new-post`.
 
-4. The post will automatically appear on the blog index, blog preview on the homepage, the sitemap, and get its own OG image.
+4. The post will automatically appear on the blog index, blog preview on the homepage (under its subject), the sitemap, and get its own OG image.
+
+### Adding a Blog Subject
+
+Edit `src/data/subjects.ts` and add a new entry to the `subjects` array. Keep entries sorted alphabetically by label:
+
+```typescript
+{ slug: "philosophy", label: "Philosophy" },
+```
+
+The slug must be lowercase with hyphens only (e.g., `"full-stack-development"`). Blog posts reference subjects by slug in their frontmatter.
 
 ### Adding a Project
 
@@ -323,6 +348,7 @@ Edit `src/data/experiences.ts` and add a new entry to the `experiences` array:
 ```typescript
 {
   title: "Job Title",
+  company: "Company Name",
   period: "Jan 2026 — Present",
   summary: "What you did in this role.",
   skills: ["Skill1", "Skill2"],
@@ -334,7 +360,32 @@ Edit `src/data/experiences.ts` and add a new entry to the `experiences` array:
 },
 ```
 
-Place newer roles at the beginning of the array (they render top to bottom).
+Place newer roles at the beginning of the array (they render top to bottom). To display a brand icon next to the company name, add an entry in the `iconMap` in `src/components/icons.tsx`.
+
+### Adding an Education Entry
+
+Edit `src/data/education.ts` and add a new entry to the `education` array:
+
+```typescript
+{
+  degree: "Degree Name",
+  institution: "Institution Name",
+  period: "Sep 2020 — Jun 2024",
+  areasOfStudy: ["Major 1", "Major 2"],
+},
+```
+
+To display a brand icon for the institution, add an entry in the `iconMap` in `src/components/icons.tsx`.
+
+### Adding a Brand Icon
+
+Edit `src/components/icons.tsx` and add an entry to the `iconMap` object, keyed by the exact string used in data files (skill name, company name, or institution name):
+
+```typescript
+"New Brand": SiNewbrand,  // from react-icons/si
+```
+
+Icons are resolved from [Simple Icons](https://simpleicons.org/) (`react-icons/si`), [Font Awesome](https://fontawesome.com/) (`react-icons/fa`), or [Lucide](https://lucide.dev/) (`lucide-react`) as fallbacks.
 
 ---
 
@@ -359,9 +410,9 @@ Social URLs appear in three places:
 - `src/components/footer.tsx` — GitHub, LinkedIn, and RSS links
 - `src/components/navbar.tsx` — Logo text (`anthony.dev`)
 
-### Replacing the Photo Placeholder
+### Replacing the Profile Photo
 
-The hero photo is a placeholder div in `src/components/hero.tsx`. Replace the inner `<div>` with a Next.js `<Image>` component pointing to your photo in `public/`.
+The hero photo is rendered via a Next.js `<Image>` component in `src/components/hero.tsx` pointing to `public/profile.jpg`. Replace that file with a new image (280x320 recommended). The image uses `object-cover` to fill the frame and `priority` for above-the-fold loading.
 
 ### Updating the Resume
 

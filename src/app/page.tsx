@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { ExperienceTimeline } from "@/components/experience-timeline";
+import { EducationSection } from "@/components/education-section";
 import { ProjectsSection } from "@/components/projects-section";
 import { BlogPreview } from "@/components/blog-preview";
 import { ContactForm } from "@/components/contact-form";
@@ -16,6 +17,7 @@ export default function Home() {
       <main id="main-content" className="pt-16">
         <Hero />
         <ExperienceTimeline />
+        <EducationSection />
         <ProjectsSection />
         <BlogPreview posts={posts} />
         <ContactForm />

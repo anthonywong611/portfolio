@@ -1,10 +1,18 @@
 export type Experience = {
   title: string;
+  company: string;
   period: string;
   summary: string;
   skills: string[];
   milestones: string[];
   current: boolean;
+};
+
+export type Education = {
+  degree: string;
+  institution: string;
+  period: string;
+  areasOfStudy: string[];
 };
 
 export type Project = {

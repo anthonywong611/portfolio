@@ -2,41 +2,32 @@ import { Experience } from "@/types";
 
 export const experiences: Experience[] = [
   {
-    title: "Senior Data Engineer",
+    title: "Agentic Data Engineer",
+    company: "Unilever Canada",
     period: "Jan 2025 — Present",
     summary:
-      "Led migration of legacy ETL pipelines to a modern streaming architecture, reducing data latency from hours to minutes and improving reliability across 12 downstream services.",
-    skills: ["Python", "Apache Kafka", "dbt", "Snowflake"],
+      "Leading AI-powered data solutions at Horizon3 AI Labs, building RAG systems, event-driven pipelines, and text-to-SQL agents for internal business use cases across procurement, logistics, and forecasting.",
+    skills: ["Python", "Vertex AI", "BigQuery", "PySpark", "GCP"],
     milestones: [
-      "Reduced pipeline failure rate by 73%",
-      "Migrated 40+ batch jobs to real-time streaming",
-      "Built internal monitoring dashboard used by 3 teams",
+      "Automated scraping and vectorization of unstructured reports for RAG-powered semantic search",
+      "Designed event-driven data ingestion with Cloud Run and Pub/Sub, optimizing 65% of source updates",
+      "Built SQL query templates for 20+ logistics KPIs, boosting text-to-SQL accuracy by 90%",
+      "Modelled Medallion Architecture for quality-assured GQL data with Dataflow and Cloud Spanner",
     ],
     current: true,
   },
   {
-    title: "Full Stack Developer",
-    period: "Jun 2023 — Dec 2024",
+    title: "Data Engineer",
+    company: "Export Development Canada",
+    period: "Jan 2023 — Jun 2024",
     summary:
-      "Built and maintained customer-facing React applications and Node.js microservices, collaborating with design and product teams to ship features on a two-week sprint cycle.",
-    skills: ["React", "TypeScript", "Node.js", "PostgreSQL"],
+      "Spearheaded migration of the Centralized Insurance Data Mart to Azure Databricks, automating data governance practices and optimizing pipeline performance using Python, SQL, and Apache Spark.",
+    skills: ["Python", "SQL", "Apache Spark", "Scala", "Azure"],
     milestones: [
-      "Shipped checkout redesign that increased conversion by 12%",
-      "Introduced end-to-end testing, catching 30+ bugs pre-release",
-      "Mentored 2 junior developers through onboarding",
-    ],
-    current: false,
-  },
-  {
-    title: "Data Analyst Intern",
-    period: "Jan 2023 — May 2023",
-    summary:
-      "Analyzed customer behavior data to identify churn patterns and built dashboards that informed the retention team's quarterly strategy.",
-    skills: ["Python", "SQL", "Tableau", "Pandas"],
-    milestones: [
-      "Built churn prediction model with 84% accuracy",
-      "Created 5 executive dashboards adopted company-wide",
-      "Presented findings to C-suite, leading to new retention program",
+      "Migrated CIDM to Enterprise Data Platform, eliminating $600K+ in technical debt",
+      "Automated data quality processes with Scala, slashing annual DQ cost by 58%",
+      "Optimized DLT pipelines with Unity Catalog, reducing workflow runtime by 40%",
+      "Led data source switching project achieving 99.4% consistency across sources",
     ],
     current: false,
   },

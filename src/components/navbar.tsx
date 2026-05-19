@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const navLinks = [
-  { href: "#home", label: "Home" },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects", label: "Projects" },
-  { href: "#blog", label: "Blog" },
+export const navLinks = [
+  { href: "/#home", label: "Home" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#blog", label: "Blog" },
 ];
+
+export const contactLink = { href: "/#contact", label: "Let's Talk" };
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -46,10 +48,10 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="#contact"
+            href={contactLink.href}
             className="rounded-md bg-accent px-4 py-1.5 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
           >
-            Let&apos;s Talk
+            {contactLink.label}
           </a>
           <ThemeToggle />
         </div>
@@ -86,10 +88,10 @@ export function Navbar() {
                 <SheetClose
                   render={
                     <a
-                      href="#contact"
+                      href={contactLink.href}
                       className="mt-2 rounded-md bg-accent px-4 py-2 text-center text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
                     >
-                      Let&apos;s Talk
+                      {contactLink.label}
                     </a>
                   }
                 />
