@@ -10,7 +10,7 @@ export function Footer() {
         </p>
         <div className="flex items-center gap-4">
           <a
-            href="https://github.com/anthonywong"
+            href="https://github.com/anthonywong611"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -20,7 +20,7 @@ export function Footer() {
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/anthonywong"
+            href="https://www.linkedin.com/in/anthony-wong-5432b5161"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"

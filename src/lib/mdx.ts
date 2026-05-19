@@ -21,6 +21,7 @@ export function getAllPosts(): BlogPost[] {
       title: data.title,
       publishedAt: data.publishedAt,
       tags: data.tags ?? [],
+      subjects: data.subjects ?? [],
       coverImage: data.coverImage,
       summary: data.summary,
       content,

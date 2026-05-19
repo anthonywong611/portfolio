@@ -2,6 +2,7 @@
 
 import { experiences } from "@/data/experiences";
 import { FadeUpOnScroll } from "@/components/motion-wrapper";
+import { BrandIcon } from "@/components/icons";
 
 export function ExperienceTimeline() {
   return (
@@ -27,9 +28,15 @@ export function ExperienceTimeline() {
               {/* Card */}
               <div className="rounded-2xl border border-border bg-card p-6">
                 <div className="mb-2 flex flex-col justify-between gap-1 sm:flex-row sm:items-start">
-                  <h3 className="text-lg font-semibold text-foreground">
-                    {exp.title}
-                  </h3>
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground">
+                      {exp.title}
+                    </h3>
+                    <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <BrandIcon name={exp.company} className="h-3.5 w-3.5" />
+                      {exp.company}
+                    </p>
+                  </div>
                   <span
                     className={`whitespace-nowrap font-mono text-sm ${
                       exp.current ? "text-accent" : "text-muted-foreground"
@@ -48,8 +55,9 @@ export function ExperienceTimeline() {
                   {exp.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="rounded bg-accent-muted px-2.5 py-0.5 text-xs text-accent"
+                      className="inline-flex items-center gap-1 rounded bg-accent-muted px-2.5 py-0.5 text-xs text-accent"
                     >
+                      <BrandIcon name={skill} className="h-3 w-3" />
                       {skill}
                     </span>
                   ))}

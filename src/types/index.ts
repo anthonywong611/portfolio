@@ -1,10 +1,18 @@
 export type Experience = {
   title: string;
+  company: string;
   period: string;
   summary: string;
   skills: string[];
   milestones: string[];
   current: boolean;
+};
+
+export type Education = {
+  degree: string;
+  institution: string;
+  period: string;
+  areasOfStudy: string[];
 };
 
 export type Project = {
@@ -23,6 +31,7 @@ export type BlogPost = {
   title: string;
   publishedAt: string;
   tags: string[];
+  subjects: string[];
   coverImage?: string;
   summary: string;
   content: string;

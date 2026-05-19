@@ -44,7 +44,7 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="px-4 py-24 md:px-8">
+    <section id="contact" className="bg-section-alt px-4 py-24 md:px-8">
       <div className="mx-auto max-w-5xl text-center">
         <h2 className="mb-2 font-bold text-foreground">Contact</h2>
         <p className="mb-8 text-muted-foreground">
