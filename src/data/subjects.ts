@@ -5,10 +5,12 @@ export type Subject = {
 
 export const subjects: Subject[] = [
   { slug: "ai-engineering", label: "AI Engineering" },
+  { slug: "culture", label: "Culture"},
   { slug: "data-engineering", label: "Data Engineering" },
   { slug: "finance", label: "Finance & Economics" },
-  { slug: "full-stack-development", label: "Full Stack Development" },
-  { slug: "machine-learning", label: "Machine Learning" },
+  { slug: "history", label: "History"},
   { slug: "mathematics", label: "Mathematics" },
+  { slug: "philosophy", label: "Philosophy"},
   { slug: "statistics", label: "Statistics" },
+  { slug: "theology", label: "Theology" },
 ];

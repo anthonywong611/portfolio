@@ -408,7 +408,7 @@ All color tokens are defined in `src/app/globals.css` under the `@theme` block (
 Social URLs appear in three places:
 - `src/components/hero.tsx` — GitHub and LinkedIn buttons
 - `src/components/footer.tsx` — GitHub, LinkedIn, and RSS links
-- `src/components/navbar.tsx` — Logo text (`anthony.dev`)
+- `src/components/navbar.tsx` — Logo text (`Anthony Wong`)
 
 ### Replacing the Profile Photo
 
