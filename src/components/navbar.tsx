@@ -33,7 +33,7 @@ export function Navbar() {
           href="/"
           className="text-lg font-bold text-accent transition-colors hover:text-accent/80"
         >
-          anthony.dev
+          Anthony Wong
         </Link>
 
         {/* Desktop nav */}
@@ -69,7 +69,7 @@ export function Navbar() {
             />
             <SheetContent side="right" className="w-[280px]">
               <SheetTitle className="text-lg font-bold text-accent">
-                anthony.dev
+                Anthony Wong
               </SheetTitle>
               <div className="mt-8 flex flex-col gap-4">
                 {navLinks.map((link) => (
