@@ -2,9 +2,9 @@ import { Experience } from "@/types";
 
 export const experiences: Experience[] = [
   {
-    title: "Agentic Data Engineer",
+    title: "Data Engineer",
     company: "Unilever Canada",
-    period: "Jan 2025 — Present",
+    period: "Jan 2025 — Sep 2026",
     summary:
       "Leading AI-powered data solutions at Horizon3 AI Labs, building RAG systems, event-driven pipelines, and text-to-SQL agents for internal business use cases across procurement, logistics, and forecasting.",
     skills: ["Python", "Vertex AI", "BigQuery", "PySpark", "GCP"],

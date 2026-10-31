@@ -46,8 +46,7 @@ Key features:
 portfolio/
 ├── content/
 │   └── blog/                          # MDX blog posts
-│       ├── building-my-portfolio.mdx
-│       └── first-data-pipeline.mdx
+│       └── complaint-canary.mdx
 ├── public/                            # Static assets (images, resume, favicon)
 ├── src/
 │   ├── app/                           # Next.js App Router
@@ -122,7 +121,19 @@ portfolio/
 - **Blog index (`/blog`)** — Static. Lists all MDX posts sorted by date.
 - **Blog posts (`/blog/[slug]`)** — SSG via `generateStaticParams`. MDX is rendered server-side with `next-mdx-remote/rsc`.
 - **Project pages (`/projects/[slug]`)** — SSG via `generateStaticParams`. Data comes from `src/data/projects.ts`.
-- **Contact API (`/api/contact`)** — Dynamic serverless function. Validates input, checks honeypot, applies in-memory rate limiting, sends email via Resend.
+- **Contact API (`/api/contact`)** — Dynamic serverless function. It checks the honeypot, validates and length-limits the input (`src/lib/contact.ts`), rate-limits to 1 message per IP per minute (`src/lib/rate-limit.ts`), and sends the email via Resend. Responses:
+
+  | Status | When |
+  | --- | --- |
+  | 200 | Message sent |
+  | 400 | Invalid input or malformed JSON |
+  | 429 | Rate limited (includes a `Retry-After` header) |
+  | 502 | Resend rejected the email |
+  | 500 | Unexpected failure, such as a missing `RESEND_API_KEY` |
+
+  Resend failures are logged with a `[contact]` prefix.
+
+  The rate limiter is in-memory, so it only works per serverless instance and resets on cold start. For durable protection, add a [Vercel Firewall](https://vercel.com/docs/vercel-firewall) rate-limit rule on `/api/contact`.
 - **OG images** — Dynamic image generation using `next/og` (`ImageResponse`). The homepage OG runs on Edge runtime; blog and project OG images run on Node.js (they read filesystem data).
 
 ### Content Model
@@ -171,6 +182,8 @@ Then edit `.env.local`:
 | Variable | Required | Description |
 | --- | --- | --- |
 | `RESEND_API_KEY` | For contact form | API key from [resend.com](https://resend.com). Without it, the contact form will return a 500 error on submit. |
+| `CONTACT_TO_EMAIL` | No | Where contact messages are delivered. Defaults to `anthonywong2718@gmail.com`. |
+| `CONTACT_FROM_EMAIL` | No | Sender. Defaults to Resend's sandbox sender `Portfolio Contact <onboarding@resend.dev>`, which **only delivers to the Resend account owner's email**. To deliver to any other address, [verify a domain](https://resend.com/domains) and set e.g. `Portfolio <contact@yourdomain.com>`. |
 | `NEXT_PUBLIC_SITE_URL` | For SEO | Your deployed URL (e.g., `https://anthonywong.dev`). Defaults to `http://localhost:3000`. Used in sitemap, OG images, and metadata. |
 
 ---
@@ -320,7 +333,7 @@ Edit `src/data/subjects.ts` and add a new entry to the `subjects` array. Keep en
 { slug: "philosophy", label: "Philosophy" },
 ```
 
-The slug must be lowercase with hyphens only (e.g., `"full-stack-development"`). Blog posts reference subjects by slug in their frontmatter.
+The slug must be lowercase with hyphens only (e.g., `"data-engineering"`). Blog posts reference subjects by slug in their frontmatter.
 
 ### Adding a Project
 
@@ -332,7 +345,8 @@ Edit `src/data/projects.ts` and add a new entry to the `projects` array:
   title: "My Project",
   summary: "One-line description for the card.",
   description: "Full description shown on the detail page.",
-  image: "/images/projects/my-project.png",
+  image: "/images/projects/my-project.png",   // optional
+  imageAlt: "What the image shows",            // required when image is set
   techStack: ["React", "Node.js"],
   githubUrl: "https://github.com/user/repo",  // optional
   liveUrl: "https://example.com",              // optional
@@ -340,6 +354,8 @@ Edit `src/data/projects.ts` and add a new entry to the `projects` array:
 ```
 
 The project will appear on the homepage grid and get its own detail page, sitemap entry, and OG image.
+
+**Project image:** put the file at `public/images/projects/<slug>.png` and set `image` to that path. It's shown whole (`object-contain`) in a white frame on the card and on the detail page, and the detail page links to the full-size file. That suits screenshots and architecture diagrams alike. Leave `image` out until you have a real file, and a "Screenshot" placeholder is shown instead. `src/__tests__/projects.test.ts` fails if a declared image is missing or has no `imageAlt`.
 
 ### Adding a Work Experience
 

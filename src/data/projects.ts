@@ -2,27 +2,17 @@ import { Project } from "@/types";
 
 export const projects: Project[] = [
   {
-    slug: "streaming-pipeline",
-    title: "Real-Time Streaming Pipeline",
-    summary:
-      "Event-driven data pipeline processing 50K+ events/sec with exactly-once delivery guarantees.",
+    slug: "complaint-canary",
+    title: "Complaint Canary",
+    summary: 
+      "Memoryless CFPB complaint data captured into SCD2 history with weekly fraud signals.",
     description:
-      "A production data pipeline built with Apache Kafka and Python that processes real-time event streams from multiple sources. Features exactly-once delivery semantics, dead letter queues for failed messages, and a monitoring dashboard built with Grafana. Reduced data latency from 4 hours to under 30 seconds for downstream analytics consumers.",
-    image: "/images/projects/streaming-pipeline.png",
-    techStack: ["Python", "Apache Kafka", "Docker", "Grafana", "PostgreSQL"],
-    githubUrl: "https://github.com/anthonywong",
+      "A daily ELT pipeline on GCP that turns the CFPB complaint database, which ships with no change history, into SCD2 history and weekly fraud signals, promoted through DEV, QA and PROD as one tested image.",
+    image: "/images/projects/complaint-canary.png",
+    imageAlt:
+      "Complaint Canary architecture: CFPB, FDIC and Census sources feed a Dagster and dbt pipeline on a Compute Engine VM, which loads Cloud Storage and BigQuery, with Cloud Logging and Monitoring sending on-call alerts.",
+    techStack: ["Python", "BigQuery", "dbt", "Dagster", "Terraform", "Docker", "DuckDB"],
+    githubUrl: "https://github.com/anthonywong611/complaint-canary",
     liveUrl: undefined,
-  },
-  {
-    slug: "portfolio-website",
-    title: "Portfolio Website",
-    summary:
-      "This very site — a production-grade Next.js portfolio with MDX blog, dark mode, and animations.",
-    description:
-      "A personal portfolio website built with Next.js 16, Tailwind CSS v4, and shadcn/ui. Features a merged hero/about section, experience timeline, project showcase, blog with MDX support, contact form via Resend, dynamic OG images, and subtle Motion animations. Designed mobile-first with full dark mode support and accessibility baked in.",
-    image: "/images/projects/portfolio.png",
-    techStack: ["Next.js", "TypeScript", "Tailwind CSS", "Motion", "Resend"],
-    githubUrl: "https://github.com/anthonywong/portfolio",
-    liveUrl: "https://anthonywong.dev",
   },
 ];
