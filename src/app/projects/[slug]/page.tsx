@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { projects } from "@/data/projects";
+import { ProjectImage } from "@/components/project-image";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -44,12 +45,30 @@ export default async function ProjectDetailPage({ params }: Props) {
         Back to projects
       </Link>
 
-      {/* Hero image placeholder */}
-      <div className="mb-8 h-[240px] overflow-hidden rounded-2xl border border-border bg-muted md:h-[320px]">
-        <div className="flex h-full w-full items-center justify-center text-lg text-muted-foreground">
-          Project Screenshot
-        </div>
-      </div>
+      {/* Hero image: opens full size in a new tab, since diagrams are dense */}
+      {project.image ? (
+        <a
+          href={project.image}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open the full-size ${project.title} image in a new tab`}
+          className="mb-8 block rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <ProjectImage
+            project={project}
+            className="h-[240px] rounded-2xl border border-border md:h-[320px]"
+            sizes="(min-width: 768px) 704px, 92vw"
+            preload
+          />
+        </a>
+      ) : (
+        <ProjectImage
+          project={project}
+          className="mb-8 h-[240px] rounded-2xl border border-border text-lg md:h-[320px]"
+          sizes="(min-width: 768px) 704px, 92vw"
+          placeholderLabel="Project Screenshot"
+        />
+      )}
 
       <h1 className="mb-3 font-bold text-foreground">{project.title}</h1>
       <p className="mb-4 text-lg text-muted-foreground">{project.summary}</p>

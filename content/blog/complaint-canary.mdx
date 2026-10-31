@@ -1,0 +1,57 @@
+---
+title: "Complaint Canary: Scam Early-Warning Signals from 18 Million Consumer Complaints"
+publishedAt: "2026-10-11"
+subjects: ["data-engineering"]
+tags: ["gcp", "bigquery", "dbt", "dagster", "terraform", "github-actions", "docker", "duckdb", "python"]
+summary: "A daily ELT pipeline on GCP that turns the CFPB complaint database, which ships with no change history, into SCD2 history and weekly fraud signals, promoted through DEV, QA and PROD as one tested image."
+---
+
+Banks and regulators usually notice a new scam weeks after consumers do. The consumers, meanwhile, have been telling the US Consumer Financial Protection Bureau about it: the bureau publishes every complaint it receives, 18.3 million so far and about 27,000 more each day.
+
+Complaint Canary reads that database daily and flags the companies and states whose fraud complaints are rising sharply against their own baseline.
+
+## The source decided the design
+
+I checked the live source before drawing anything, and three facts changed the plan:
+
+- CFPB had stopped publishing complaint narratives two months earlier. Classification had to work from product and issue labels alone.
+- The search API rejected some clients and its exports are capped at 100,000 rows, so it could not carry 27,000 new records a day plus every later edit.
+- Records have no update timestamp, yet companies keep editing their responses after publication.
+
+What remains is one 353 MB file, rebuilt every day, with no history. So the pipeline downloads it in full, compares it with yesterday by row hash, and keeps the differences as SCD2 history.
+
+## Protecting history from a bad file
+
+Full-snapshot comparison has one ugly failure: a truncated download looks exactly like millions of deletions.
+
+Before a snapshot may touch history, five dbt tests check it. Two matter most: the row count cannot fall more than 0.5% below the last snapshot, and no more than 0.5% of known complaints may be missing. A file that fails is rejected and changes nothing.
+
+Validity dates come from the snapshot date, not the clock, so re-running a day is a no-op and replaying landed files rebuilds identical history. A test drops the history table, replays it, and compares.
+
+## One codebase, two warehouses
+
+The SQL is written in the subset BigQuery and DuckDB share, with the few differences isolated in macros. The whole pipeline, including the Dagster job and 112 dbt steps, runs on a laptop and in CI against a synthetic fixture that plants one scam spike and one decoy.
+
+That paid off: the first run on BigQuery, in DEV, passed.
+
+## Build once, promote the same image
+
+A push to a feature branch runs the tests, builds one image, deploys it to DEV on a 5% sample, then to QA on the full data. QA tags the exact digest it tested. A merge to `main` deploys PROD, and only a digest carrying that tag.
+
+The first QA run failed, usefully. My registry-to-registry copy had wrapped the image in a new index and changed its digest. The check written for that case stopped the deploy.
+
+## Does the alert rule work?
+
+Each week's fraud complaints are compared with the series' previous twelve weeks, using the median and median absolute deviation so earlier spikes do not hide new ones. A week must also be materially larger, and for a company the fraud share of its complaints must rise too. That last condition exists because my decoy, a week where every kind of complaint tripled, would otherwise have alerted.
+
+Replayed over the full history, the rule raises 554 alerts in 455 weeks, about one a week, and at most 23% repeat the following week. It is quiet enough to read and it catches spikes, not level shifts.
+
+What it cannot tell me is how many of those alerts were real fraud. Complaints are self-reported and carry no such label. The output is a triage list for an analyst, and I describe it that way.
+
+## What I would do next
+
+- Move Dagster off a single VM to a managed orchestrator.
+- Ask analysts to label a sample of alerts, so accuracy can be measured instead of assumed.
+- Add a seasonality term: a category that rises every tax season currently alerts every tax season.
+
+The code, the five planning iterations and the reviews that shaped them are in the repository.

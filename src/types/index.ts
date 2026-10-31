@@ -20,7 +20,10 @@ export type Project = {
   title: string;
   summary: string;
   description: string;
-  image: string;
+  /** "/images/projects/<slug>.png" under public/. Omit until a real screenshot exists. */
+  image?: string;
+  /** Describes the image content. Required when `image` is set. */
+  imageAlt?: string;
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;

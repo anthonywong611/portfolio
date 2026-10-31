@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { CONTACT_LIMITS } from "@/lib/contact";
 
 export function ContactForm() {
   const [pending, setPending] = useState(false);
@@ -75,6 +76,7 @@ export function ContactForm() {
             <input
               id="name"
               name="name"
+              maxLength={CONTACT_LIMITS.name}
               type="text"
               required
               placeholder="Your name"
@@ -92,6 +94,7 @@ export function ContactForm() {
             <input
               id="email"
               name="email"
+              maxLength={CONTACT_LIMITS.email}
               type="email"
               required
               placeholder="your@email.com"
@@ -109,6 +112,7 @@ export function ContactForm() {
             <textarea
               id="message"
               name="message"
+              maxLength={CONTACT_LIMITS.message}
               required
               rows={4}
               placeholder="What's on your mind?"

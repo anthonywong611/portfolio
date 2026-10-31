@@ -5,6 +5,7 @@ import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Project } from "@/types";
 import { FadeUpOnScroll } from "@/components/motion-wrapper";
+import { ProjectImage } from "@/components/project-image";
 
 export function ProjectCard({ project, index = 0 }: { project: Project; index?: number }) {
   return (
@@ -12,11 +13,11 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
       <div className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-accent/50 hover:shadow-lg">
         {/* Screenshot */}
         <Link href={`/projects/${project.slug}`}>
-          <div className="mb-4 h-[140px] overflow-hidden rounded-lg bg-muted">
-            <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-              Screenshot
-            </div>
-          </div>
+          <ProjectImage
+            project={project}
+            className="mb-4 h-[140px] rounded-lg border border-border"
+            sizes="(min-width: 1024px) 452px, (min-width: 768px) 45vw, 90vw"
+          />
         </Link>
 
         {/* Title */}
